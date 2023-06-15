@@ -71,7 +71,7 @@ namespace NAM {
 		::DSP* currentModel = nullptr;
 		std::string currentModelPath;
 
-		std::unordered_map<std::string, float> mNAMParams = {};
+		std::unordered_map<std::string, double> mNAMParams = {};
 
 		Plugin();
 		~Plugin();
