@@ -65,7 +65,6 @@ namespace NAM {
 		uris.patch_property = map->map(map->handle, LV2_PATCH__property);
 		uris.patch_value = map->map(map->handle, LV2_PATCH__value);
 		uris.units_frame = map->map(map->handle, LV2_UNITS__frame);
-		uris.state_StateChanged = map->map(map->handle, LV2_STATE__StateChanged);
 
 		uris.model_Path = map->map(map->handle, MODEL_URI);
 
@@ -149,7 +148,7 @@ namespace NAM {
 		return LV2_WORKER_ERR_UNKNOWN;
 	}
 
-	// runs on RT, right after process(), must not block or allocate memory
+	// runs on RT, right after process(), must not block or [de]allocate memory
 	LV2_Worker_Status Plugin::work_response(LV2_Handle instance, uint32_t size,	const void* data)
 	{
 		if (*(const LV2WorkType*)data != kWorkTypeSwitch)
@@ -171,7 +170,6 @@ namespace NAM {
 
 		// report change to host/ui
 		nam->write_current_path();
-		nam->write_state_changed();
 
 		return LV2_WORKER_SUCCESS;
 	}
@@ -196,9 +194,9 @@ namespace NAM {
 					const LV2_Atom* file_path = NULL;
 
 					lv2_atom_object_get(obj,
-										uris.patch_property, &property,
-										uris.patch_value, &file_path,
-										0);
+					                    uris.patch_property, &property,
+					                    uris.patch_value, &file_path,
+					                    0);
 
 					if (property && property->type == uris.atom_URID &&
 						((const LV2_Atom_URID*)property)->body == uris.model_Path &&
@@ -413,18 +411,6 @@ namespace NAM {
 		lv2_atom_forge_urid(&atom_forge, uris.model_Path);
 		lv2_atom_forge_key(&atom_forge, uris.patch_value);
 		lv2_atom_forge_path(&atom_forge, currentModelPath.c_str(), currentModelPath.length() + 1);
-
-		lv2_atom_forge_pop(&atom_forge, &frame);
-	}
-
-	void Plugin::write_state_changed()
-	{
-		LV2_Atom_Forge_Frame frame;
-
-		lv2_atom_forge_frame_time(&atom_forge, 0);
-		lv2_atom_forge_object(&atom_forge, &frame, 0, uris.state_StateChanged);
-
-		/* object with no properties */
 
 		lv2_atom_forge_pop(&atom_forge, &frame);
 	}
