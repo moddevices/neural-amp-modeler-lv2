@@ -112,7 +112,7 @@ namespace NAM {
 						{
 							float* buffer = new float[numSamples];
 
-							std::unordered_map<std::string, double> params = {};
+							std::unordered_map<std::string, float> params = {};
 							model->process(&buffer, &buffer, 1, numSamples, 1.0, 1.0, params);
 							model->finalize_(numSamples);
 
