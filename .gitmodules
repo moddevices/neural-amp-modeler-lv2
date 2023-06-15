@@ -6,5 +6,5 @@
 	url = https://gitlab.com/libeigen/eigen
 [submodule "NeuralAmpModelerCore"]
 	path = deps/NeuralAmpModelerCore
-	url = https://github.com/mikeoliphant/NeuralAmpModelerCore
+	url = https://github.com/moddevices/NeuralAmpModelerCore
 	branch = devel
